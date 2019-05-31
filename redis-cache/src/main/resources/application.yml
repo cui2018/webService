@@ -1,0 +1,48 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: cui-eureka-server-user
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+  #redis config
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+    #cluster:
+      #nodes: localhost:6379 #redis集群
+    password:
+    jedis:
+      pool:
+        max-total: 600
+        max-active: 500
+        max-wait: 10000
+        max-idle: 200
+        min-idle: 10
+    timeout: 5000
+    block-when-exhausted: true
+    sentinel:
+      master: mymaster
+      nodes: 127.0.0.1:26379,127.0.0.1:26380,127.0.0.1:26381
+      pool:
+        max-total: 100
+        max-idle: 50
+        min-idle: 50
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8167/eureka/
+    instance:
+      prefer-ip-address: true # 当其他服务获取服务时提供ip，而不是hostname
+      ip-address: 127.0.0.1 #指定自己的ip信息，不指定的话会自己寻找
+    fetch-registry: false
+    register-with-eureka: false
+mq:
+  rabbit:
+    host: 127.0.0.1
+    port: 5672
+    virtualHost: /
+    username: cui
+    password: 123456
