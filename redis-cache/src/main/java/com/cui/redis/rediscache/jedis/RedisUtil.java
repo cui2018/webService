@@ -966,11 +966,12 @@ public class RedisUtil {
      * @param key
      * @return
      */
-    public List<String> hvals(String key) {
+    public List<String> hvals(String key, int db) {
         Jedis jedis = null;
         List<String> res = null;
         try {
             jedis = jedisPool.getResource();
+            jedis.select(db);
             res = jedis.hvals(key);
         } catch (Exception e) {
             log.error(e.getMessage());
