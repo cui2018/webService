@@ -2,11 +2,11 @@ package com.cui.mq.rabbitMq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +26,12 @@ public class MqSender implements RabbitTemplate.ConfirmCallback {
     @Autowired
     private RabbitTemplate  rabbitTemplate;
 
+    @Autowired
+    private RabbitAdmin rabbitAdmin;
+
+    @Autowired
+    private Binding binding;
+
 
     /*@Autowired
     public MqSender(RabbitTemplate rabbitTemplate) {
@@ -35,7 +41,7 @@ public class MqSender implements RabbitTemplate.ConfirmCallback {
 
 
     public void send() throws Exception {
-
+        //rabbitAdmin.
         rabbitTemplate.send("mall.paied.order", "hello，rabbit-", new Message("".getBytes(), new MessageProperties()));
         System.out.println("Sender:" + "rabbit-");
     }
@@ -50,6 +56,13 @@ public class MqSender implements RabbitTemplate.ConfirmCallback {
             return mes;
         });*/
     }
+    public void sendMsgTwo(String content) {
+        CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
+        //把消息放入ROUTINGKEY_A对应的队列当中去，对应的是队列A
+        rabbitTemplate.convertAndSend(binding);
+        rabbitTemplate.setConfirmCallback(this);
+    }
+
     /**
      * 回调
      */

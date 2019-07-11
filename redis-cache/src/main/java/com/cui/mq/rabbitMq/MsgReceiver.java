@@ -18,6 +18,6 @@ public class MsgReceiver {
 
     @RabbitHandler
     public void process(String content) {
-        logger.info("接收处理队列A当中的消息： " + content);
+        logger.info("one接收处理队列A当中的消息： " + content);
     }
 }
