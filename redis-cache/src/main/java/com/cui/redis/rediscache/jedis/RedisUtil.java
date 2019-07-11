@@ -49,8 +49,8 @@ public class RedisUtil {
         Jedis jedis = null;
         String value = null;
         try {
-            HostAndPort currentHostMaster = jedisPool.getCurrentHostMaster();
-            log.info("ip地址：{}, 端口号：{}", currentHostMaster.getHost(), currentHostMaster.getPort());
+            //HostAndPort currentHostMaster = jedisPool.getCurrentHostMaster();
+            //log.info("ip地址：{}, 端口号：{}", currentHostMaster.getHost(), currentHostMaster.getPort());
             jedis = jedisPool.getResource();
             jedis.select(indexdb);
             value = jedis.get(key);
@@ -1017,8 +1017,8 @@ public class RedisUtil {
         Long res = null;
         try {
             jedis = jedisPool.getResource();
-            HostAndPort currentHostMaster = jedisPool.getCurrentHostMaster();
-            log.info("ip地址：{}, 端口号：{}", currentHostMaster.getHost(), currentHostMaster.getPort());
+            //HostAndPort currentHostMaster = jedisPool.getCurrentHostMaster();
+            //log.info("ip地址：{}, 端口号：{}", currentHostMaster.getHost(), currentHostMaster.getPort());
             jedis.select(indexdb);
             res = jedis.lpush(key, strs);
         } catch (Exception e) {
