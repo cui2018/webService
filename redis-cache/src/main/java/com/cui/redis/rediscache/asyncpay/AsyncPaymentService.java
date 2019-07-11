@@ -32,7 +32,7 @@ public class AsyncPaymentService {
         System.out.println(index);
         System.out.println(redisUtil.getbit("cuic", (long)1));
         System.out.println(redisUtil.getbit("cuic", (long)2));
-        log.info("读数据：{}", cuicuic);
+        //log.info("读数据：{}", cuicuic);
          //redissonClient.getQueue("pay_queue").add(paymentRequset);
         return "success";
     }
