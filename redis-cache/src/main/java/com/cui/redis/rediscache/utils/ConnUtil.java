@@ -93,6 +93,24 @@ public class ConnUtil {
         return byteArrayOutputStream.toByteArray();
     }
 
+    private String runRawPostMethod(String token, String url2) throws IOException, DemoException {
+        //String contentTypeStr = "audio/" + FORMAT + "; rate=" + RATE;
+        //System.out.println(url2);
+        String contentTypeStr = "";
+        byte[] content = getFileContent("");
+        HttpURLConnection conn = (HttpURLConnection) new URL(url2).openConnection();
+        conn.setConnectTimeout(5000);
+        conn.setRequestProperty("Content-Type", contentTypeStr);
+        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.getOutputStream().write(content);
+        conn.getOutputStream().close();
+        System.out.println("url is " + url2);
+        System.out.println("header is  " + "Content-Type :" + contentTypeStr);
+        String result = ConnUtil.getResponseString(conn);
+        return result;
+    }
+
     public String runJsonPostMethod(String url, JSONObject params) throws DemoException, IOException {
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setConnectTimeout(5000);
