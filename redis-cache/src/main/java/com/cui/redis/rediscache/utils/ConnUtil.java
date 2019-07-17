@@ -1,10 +1,10 @@
 package com.cui.redis.rediscache.utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import com.alibaba.fastjson.JSONObject;
+
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 
 /**
@@ -92,4 +92,51 @@ public class ConnUtil {
         }
         return byteArrayOutputStream.toByteArray();
     }
+
+    public String runJsonPostMethod(String url, JSONObject params) throws DemoException, IOException {
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setConnectTimeout(5000);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+        conn.setDoOutput(true);
+        conn.getOutputStream().write(params.toString().getBytes());
+        conn.getOutputStream().close();
+        String result = ConnUtil.getResponseString(conn);
+        return result;
+    }
+
+    private String base64Encode(byte[] content) {
+        /**
+         Base64.Encoder encoder = Base64.getEncoder(); // JDK 1.8  推荐方法
+         String str = encoder.encodeToString(content);
+         **/
+
+        char[] chars = Base64Util.encode(content); // 1.7 及以下，不推荐，请自行跟换相关库
+        String str = new String(chars);
+
+        return str;
+    }
+
+    private byte[] getFileContent(String filename) throws DemoException, IOException {
+        File file = new File(filename);
+        if (!file.canRead()) {
+            System.err.println("文件不存在或者不可读: " + file.getAbsolutePath());
+            throw new DemoException("file cannot read: " + file.getAbsolutePath());
+        }
+        FileInputStream is = null;
+        try {
+            is = new FileInputStream(file);
+            return ConnUtil.getInputStreamContent(is);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
 }
